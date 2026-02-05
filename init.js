@@ -13,6 +13,36 @@ const RELEASES_URL = "https://releases.electronjs.org/releases.json";
 const argv = new Set(process.argv.slice(2));
 const enableAudit = argv.has("--audit");
 const forceRebuild = argv.has("--force");
+const showHelp = argv.has("--help") || argv.has("-h");
+
+if (showHelp) {
+  console.log(`
+ElectroInit - Electron + React + Vite project scaffold generator
+
+Usage:
+  node init.js [options]
+
+Options:
+  --force   Force rebuild the init_src cache, skip interactive prompts
+  --audit   Enable npm audit during dependency installation
+  -h, --help  Show this help message
+
+Interactive Flow:
+  1. Choose target directory (default: init_src)
+  2. If target exists, prompt to overwrite
+  3. Choose whether to use cached scaffold from init_src
+  4. Configure npm mirror (npmmirror.com)
+  5. Select backend type: node / python-fastapi / golang-gin
+  6. Auto-detect compatible Electron version based on local Node.js
+  7. Install dependencies (root + frontend)
+
+Examples:
+  node init.js              Interactive scaffold generation
+  node init.js --force      Rebuild init_src cache non-interactively
+  node init.js --audit      Enable npm audit during install
+`);
+  process.exit(0);
+}
 const isWindows = process.platform === "win32";
 const npmCommand = isWindows ? "npm.cmd" : "npm";
 const TEMPLATE_DIR = DEFAULT_TARGET;
